@@ -3,6 +3,7 @@ import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 
 import userRoutes from './routes/users';
+import nlRoutes from './routes/nl';
 
 const app = new Hono();
 
@@ -12,6 +13,7 @@ app.use('*', cors());
 
 // Mount routes
 app.route('/api/users', userRoutes);
+app.route('/api/NL', nlRoutes);
 
 // Health check
 app.get('/', (c) => c.json({ status: 'ok', message: 'Hono API on Vercel' }));
