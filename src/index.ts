@@ -5,6 +5,7 @@ import { swaggerUI } from '@hono/swagger-ui';
 
 import userRoutes from './routes/users';
 import nlRoutes from './routes/nl';
+import thRoutes from './routes/th';
 
 const app = new Hono();
 
@@ -15,6 +16,7 @@ app.use('*', cors());
 // Mount routes
 app.route('/api/users', userRoutes);
 app.route('/api/NL', nlRoutes);
+app.route('/api/th', thRoutes);
 
 // OpenAPI JSON spec
 app.get('/doc', (c) => {
@@ -108,6 +110,43 @@ app.get('/doc', (c) => {
           responses: {
             '200': { description: 'Termination result (success or manual_required)' },
             '400': { description: 'Missing required fields' },
+          },
+        },
+      },
+      '/api/th/Contracts/{contractId}': {
+        get: {
+          tags: ['TH'],
+          summary: 'Get TH contract details',
+          parameters: [
+            {
+              name: 'contractId',
+              in: 'path',
+              required: true,
+              schema: { type: 'integer' },
+              description: 'Contract identifier',
+            },
+            {
+              name: 'FullDetails',
+              in: 'query',
+              required: false,
+              schema: { type: 'boolean' },
+              description: 'Include contractFull section when true',
+            },
+            {
+              name: 'IsPreview',
+              in: 'query',
+              required: false,
+              schema: { type: 'boolean' },
+              description: 'Mark response data as draft when true',
+            },
+          ],
+          responses: {
+            '200': {
+              description: 'TH contract payload',
+            },
+            '400': {
+              description: 'Invalid contractId',
+            },
           },
         },
       },
